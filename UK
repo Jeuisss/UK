@@ -1,0 +1,94 @@
+from tqdm.notebook import tqdm
+
+# Simulated costs (in USD)
+economy_class_estimated_cost = 800  # Average cost for a round-trip economy class flight
+business_class_estimated_cost = 2500  # Average cost for a round-trip business class flight
+
+def get_flight_costs(class_type):
+    if class_type.lower() == 'economy':
+        return economy_class_estimated_cost
+    elif class_type.lower() == 'business':
+        return business_class_estimated_cost
+    else:
+        return None
+
+# Simulate scraping for flight costs
+flight_costs = get_flight_costs('economy')
+
+# Output the estimated flight costs
+print('Estimated round-trip flight cost from Toronto to the UK (economy class): $' + str(flight_costs))
+
+import numpy as np
+import pandas as pd
+from tqdm.notebook import tqdm
+
+# Simulated average costs per night for a 4-star hotel in the UK (in USD)
+average_hotel_cost_per_night = 150
+
+# Calculate the total for 7 nights
+hotel_cost_for_7_nights = average_hotel_cost_per_night * 7
+
+# Calculate the cost for double occupancy (divided by 2)
+hotel_cost_double_occupancy = hotel_cost_for_7_nights / 2
+
+# Output the estimated hotel costs
+print('Estimated hotel cost for 7 nights (single occupancy): $' + str(hotel_cost_for_7_nights))
+print('Estimated hotel cost for 7 nights (double occupancy): $' + str(hotel_cost_double_occupancy))
+
+# Simulated entry fees for popular tourist attractions in the UK (in USD)
+# These are average prices for adults
+attractions_cost_per_person = {
+    'London Eye': 30,
+    'Tower of London': 30,
+    'Buckingham Palace Tour': 25,
+    'Stonehenge': 20,
+    'Edinburgh Castle': 20
+}# Calculate the total sightseeing cost per person assuming they visit all attractions
+total_attractions_cost_per_person = sum(attractions_cost_per_person.values())
+
+# Estimated daily food cost per person in the UK (in USD)
+daily_food_cost = 50
+
+# Calculate the total food cost for 7 days
+food_cost_for_7_days = daily_food_cost * 7
+
+# Output the estimated sightseeing and food costs
+print('Estimated total sightseeing cost per person: $' + str(total_attractions_cost_per_person))
+print('Estimated total food cost for 7 days per person: $' + str(food_cost_for_7_days))
+
+import matplotlib.pyplot as plt
+
+# Compile all costs into a DataFrame
+costs = {
+    'Item': ['Flights', 'Hotel (Single Occupancy)', 'Hotel (Double Occupancy)', 'Sightseeing', 'Food (7 Days)'],
+    'Cost Per Person': [800, 1050, 525, 125, 350]
+}
+cost_df = pd.DataFrame(costs)
+
+# Calculate the total cost per person for single and double occupancy
+single_occupancy_total = cost_df['Cost Per Person'][0] + cost_df['Cost Per Person'][1] + cost_df['Cost Per Person'][3] + cost_df['Cost Per Person'][4]
+double_occupancy_total = cost_df['Cost Per Person'][0] + cost_df['Cost Per Person'][2] + cost_df['Cost Per Person'][3] + cost_df['Cost Per Person'][4]
+
+# Assuming a standard UK VAT rate of 20%
+single_occupancy_total_with_tax = single_occupancy_total * 1.2
+double_occupancy_total_with_tax = double_occupancy_total * 1.2
+
+# Add total costs to the DataFrame
+cost_df = cost_df.append({'Item': 'Total (Single Occupancy)', 'Cost Per Person': single_occupancy_total}, ignore_index=True)
+cost_df = cost_df.append({'Item': 'Total (Double Occupancy)', 'Cost Per Person': double_occupancy_total}, ignore_index=True)
+cost_df = cost_df.append({'Item': 'Total with Tax (Single Occupancy)', 'Cost Per Person': single_occupancy_total_with_tax}, ignore_index=True)
+cost_df = cost_df.append({'Item': 'Total with Tax (Double Occupancy)', 'Cost Per Person': double_occupancy_total_with_tax}, ignore_index=True)
+
+# Create a pie chart for the cost breakdown
+labels = cost_df['Item'][:-4]
+sizes = cost_df['Cost Per Person'][:-4]
+
+fig1, ax1 = plt.subplots()
+ax1.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
+ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+plt.title('Vacation Cost Breakdown Per Person')
+plt.show()
+
+# Output the total costs
+print(cost_df[['Item', 'Cost Per Person']])
